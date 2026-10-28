@@ -81,18 +81,60 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // GA4：主要リンクのクリックを計測（既存設定を維持）
-  document.querySelectorAll(".button, .text-link").forEach(link => {
-    link.addEventListener("click", () => {
-      if (typeof gtag === "function") {
-        gtag("event", "content_link_click", {
-          link_text: link.textContent.trim(),
-          link_url: link.getAttribute("href")
-        });
+  // GA4: events for meaningful site interactions. GA4 base tag is kept in each page.
+  const sendEvent = (name, parameters = {}) => {
+    if (typeof window.gtag === "function") {
+      window.gtag("event", name, { page_section: currentPage, ...parameters });
+    }
+  };
+
+  document.addEventListener("click", event => {
+    const link = event.target.closest("a[href]");
+    if (!link) return;
+    const url = new URL(link.href, window.location.href);
+    const label = (link.getAttribute("aria-label") || link.textContent || "").trim().slice(0, 100);
+    const data = { link_text: label, link_url: url.href };
+
+    if (link.dataset.track === "back_to_top") {
+      sendEvent("back_to_top", data);
+    } else if (link.dataset.track === "video_click") {
+      sendEvent("video_click", { ...data, video_name: link.dataset.videoName || "unknown" });
+    } else if (/instagram\.com|youtube\.com|youtu\.be|(^|\.)x\.com$|twitter\.com/.test(url.hostname)) {
+      sendEvent("sns_click", { ...data, sns_platform: url.hostname.replace(/^www\./, "") });
+    } else if (url.origin !== window.location.origin && /^https?:$/.test(url.protocol)) {
+      sendEvent("outbound_content_click", data);
+    } else if (link.closest(".global-nav")) {
+      sendEvent("navigation_click", data);
+    } else if (link.matches(".button, .text-link")) {
+      sendEvent("content_link_click", data);
+    }
+  });
+
+  // Accordion openings show which topics attract interest.
+  document.querySelectorAll(".accordion-trigger").forEach(trigger => {
+    trigger.addEventListener("click", () => {
+      if (trigger.getAttribute("aria-expanded") === "true") {
+        sendEvent("accordion_open", { topic_name: trigger.textContent.trim().slice(0, 100) });
       }
     });
   });
 
+  // The artist cards are not links: measure visible cards, not fictitious clicks.
+  if ("IntersectionObserver" in window) {
+    const viewed = new Set();
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const artist = entry.target.dataset.artist;
+        if (artist && !viewed.has(artist)) {
+          viewed.add(artist);
+          sendEvent("artist_view", { artist_name: artist });
+        }
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll(".artist-card[data-artist]").forEach(card => observer.observe(card));
+  }
 
   // =========================
   // 障子を開く
