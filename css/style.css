@@ -2016,3 +2016,47 @@ blockquote div {
     }
 
 }
+
+/* 2026-10: artists, footer top link, and behind-the-scenes video */
+.artist-nameplate {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    color: #24211e;
+    background: linear-gradient(145deg, #f7f1e5, #e6d8c1);
+    font-family: "Noto Serif JP", serif;
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-align: center;
+}
+.story-video-link { margin-block: 30px; }
+.failure-video-button { display: inline-block; max-width: 100%; }
+.back-to-top-wrap { text-align: center; padding: 22px 16px 28px; }
+.back-to-top { display: inline-block; padding: 10px 24px; border: 1px solid #a33b32; border-radius: 4px; color: #a33b32; background: #fffdf8; text-decoration: none; font-weight: 700; }
+.back-to-top:hover, .back-to-top:focus-visible { background: #a33b32; color: #fff; }
+@media (prefers-reduced-motion: no-preference) { html:focus-within { scroll-behavior: smooth; } }
+
+/* YouTube Shorts embed: preserves the vertical 9:16 ratio */
+.making-video-frame {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.making-video-frame iframe {
+    display: block;
+    width: 100%;
+    max-width: 360px;
+    aspect-ratio: 9 / 16;
+    height: auto;
+    border: 0;
+}
+.making-video-info .making-video-youtube-link {
+    margin-top: 12px;
+}
+.making-video-youtube-link a {
+    color: var(--red);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
