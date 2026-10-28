@@ -28,6 +28,7 @@
 
 
 <body>
+    <div id="top"></div>
 
     <!-- 本文へ移動 -->
     <a class="skip-link" href="#main">本文へ移動</a>
@@ -152,16 +153,13 @@
                     <!-- 動画 -->
                     <div class="making-video-frame">
 
-                        <video controls
-                               preload="metadata"
-                               playsinline>
-
-                            <source src="video/puraban.mp4"
-                                    type="video/mp4">
-
-                            お使いのブラウザでは動画を再生できません。
-
-                        </video>
+                        <iframe
+                            src="https://www.youtube-nocookie.com/embed/AUzMLTWgR_0?enablejsapi=1"
+                            title="歌川国芳の金魚ストラップ｜制作動画"
+                            loading="lazy"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen></iframe>
 
                     </div>
 
@@ -187,7 +185,9 @@
                             </span>
                         </p>
 
-                    </div>
+                    
+                        <p class="making-video-youtube-link"><a href="https://www.youtube.com/shorts/AUzMLTWgR_0" target="_blank" rel="noopener noreferrer" data-track="video_click" data-video-name="making_001"><span data-ja="YouTube Shortsで見る ↗" data-en="Watch on YouTube Shorts ↗">YouTube Shortsで見る ↗</span></a></p>
+</div>
 
                 </article>
 
@@ -378,7 +378,8 @@
             © Ukiyo-e × 100yen Project
         </p>
 
-    </footer>
+        <div class="back-to-top-wrap"><a class="back-to-top" href="#top" data-track="back_to_top"><span data-ja="↑ TOPへ戻る" data-en="↑ Back to top">↑ TOPへ戻る</span></a></div>
+</footer>
 
 
 
